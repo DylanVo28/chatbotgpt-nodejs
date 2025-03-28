@@ -5,7 +5,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const geminiAI = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-export default geminiAI
+
 
 export const getMessageGeminiAI=async (messages)=>{
     const result=await geminiAI.generateContent(messages[messages.length-1].content)

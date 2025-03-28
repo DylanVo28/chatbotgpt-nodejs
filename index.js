@@ -2,24 +2,25 @@ import  { getMessageOpenAI} from './config/open-ai.js';
 import readlineSync from 'readline-sync';
 import colors from 'colors';
 import  {getMessageGeminiAI} from "./config/gemini-ai.js";
-const MODEL={
+const AI_MODELS={
   'OPENAI':'OPENAI',
-  'GEMINI_AI':'GEMINI_AI',
+  'GEMINI':'GEMINI',
 }
-const getMessage= {
-  [MODEL.OPENAI]: getMessageOpenAI,
-  [MODEL.GEMINI_AI]: getMessageGeminiAI
+const getMessageFunction= {
+  [AI_MODELS.OPENAI]: getMessageOpenAI,
+  [AI_MODELS.GEMINI]: getMessageGeminiAI
 }
-const models=[MODEL.OPENAI, MODEL.GEMINI_AI];
+const availableModels=Object.values(AI_MODELS)
 async function main() {
   console.log(colors.bold.green('Welcome to the Chatbot Program!'));
   console.log(colors.bold.green('You can start chatting with the bot.'));
   console.log(colors.bold.green('Please pick your ai model'));
-  for(let i=0;i<models.length;i++){
-    console.log(colors.bold.green(`${i}: ${models[i]}`));
+  for(let i=0;i<availableModels.length;i++){
+    console.log(colors.bold.green(`${i}: ${availableModels[i]}`));
   }
-  const userInput = readlineSync.question(colors.yellow('You: '));
-  const getMessageAction=getMessage[models[Number(userInput)]]
+  const selectedModelIndex = readlineSync.question(colors.yellow('Select model (enter number): '));
+  const selectedModel = availableModels[Number(selectedModelIndex)];
+  const getMessage=getMessageFunction[selectedModel]
 
   const chatHistory = [];
 
@@ -34,7 +35,7 @@ async function main() {
 
       messages.push({ role: 'user', content: userInput });
 
-      const text=await  getMessageAction(messages);
+      const text=await  getMessage(messages);
 
       if (userInput.toLowerCase() === 'exit') {
         console.log(colors.green('Bot: ') + text);
