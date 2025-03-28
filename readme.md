@@ -2,6 +2,9 @@
 
 This is a chatbot written in Node.js that runs in the terminal
 
+## Demo
+![img.png](img.png)
+
 ## Usage
 
 Create a file named `.env` and add the following:
